@@ -1,0 +1,55 @@
+.footer {
+  background: #177fb0;
+  color: white;
+  padding: 20px calc(23.8vw - 56px) 40px ;
+  font-size: 14px;
+
+
+  a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    margin-bottom: 15px;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  &__socials {
+    display: flex;
+    gap: 12px;
+    font-size: 18px;
+  }
+
+  &__col h4 {
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+
+  &__contacts div {
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  &__bottom {
+    font-size: 14px;
+    color: white;
+    padding: 15px 40px;
+    background: #0e5f86;
+    font-size: 12px;
+  }
+}

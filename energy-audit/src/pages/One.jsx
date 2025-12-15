@@ -9,7 +9,7 @@ export default function One() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/audit-orders")
+    fetch("http://192.168.0.108:5000/audit-orders")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Ошибка запроса");

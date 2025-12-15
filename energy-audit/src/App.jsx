@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 import One from "./pages/One";
 import Two from "./pages/Two";
 import Three from "./pages/Three";
@@ -18,6 +19,8 @@ export default function App() {
         <Route path="/four" element={<Four />} />
         <Route path="/five" element={<Five />} />
       </Routes>
+        <Footer />
     </>
+
   );
 }
