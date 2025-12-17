@@ -1,40 +1,53 @@
+import { useEffect, useRef } from "react";
 import "../styles/page.scss";
 
-import { useEffect, useState } from "react";
-
-
 export default function One() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const aboutRef = useRef(null);
 
   useEffect(() => {
-    fetch("http://192.168.0.108:5000/audit-orders")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Ошибка запроса");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
         }
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      },
+      {
+        threshold: 0.2, // 20% блока видно
+      }
+    );
+
+    if (aboutRef.current) {
+      observer.observe(aboutRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
-  if (error) return <p>Ошибка: {error}</p>;
-
   return (
-    <ul>
-      {data.map((item, i) => (
-        <li key={i}>{item.name}</li>
-      ))}
-    </ul>
+    <section className="About">
+      <div className="About_container hidden" ref={aboutRef}>
+        <h2 className="about__title">О нас</h2>
+      <p>
+        Мы — команда профессионалов в сфере энергоаудита и энергоэффективных решений, помогающая бизнесу и организациям снижать энергопотребление, оптимизировать затраты и повышать эффективность эксплуатации объектов.
+      </p>
+
+      <p>
+        Наша компания проводит комплексные энергетические обследования зданий, промышленных предприятий и инженерных систем с использованием современных методик и измерительного оборудования. Мы анализируем фактическое потребление энергоресурсов, выявляем потери и разрабатываем практические рекомендации по их устранению.
+      </p>
+
+      <p>
+        Наша цель — сделать энергопотребление прозрачным, управляемым и экономически выгодным. Мы не просто выявляем проблемы, а предлагаем конкретные решения, направленные на снижение расходов, повышение надёжности систем и соответствие действующим нормативам.
+      </p>
+
+      <p>
+        Мы работаем в тесном взаимодействии с заказчиком на всех этапах — от первичного анализа до внедрения рекомендаций и последующего контроля результатов. Такой подход позволяет достигать измеримого эффекта и долгосрочной экономии.
+      </p>
+
+      <p>
+        Энергоаудит с нами — это инвестиция в устойчивость, безопасность и эффективность вашего бизнеса.
+      </p>
+      
+      </div>
+    </section>
   );
 }

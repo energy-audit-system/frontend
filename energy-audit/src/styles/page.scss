@@ -30,3 +30,41 @@
       color: #0094ff;     
     }
   }
+.About{
+    padding: 20px calc(23.8vw - 56px);
+    font-size: calc(0.3vw + 13.2px);
+}
+.about__title{
+    font-size: calc(1.5vw + 18.4px);
+    margin-bottom: calc(0.6vw + 8px);
+}
+/* СКРЫТО */
+.hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+/* ПОЯВЛЕНИЕ */
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about__title {
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #00b69f;
+}
+
+p {
+  text-align: justify;
+  line-height: 1.55;
+  color: #e2e2e2;
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
