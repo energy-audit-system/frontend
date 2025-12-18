@@ -78,3 +78,80 @@ p {
   opacity: 1;
   transform: translateY(0);
 }
+.services {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+/* 🧩 Карточка услуги */
+.service-card {
+  width: 180px;
+  min-height: 160px;
+
+  background: rgba(20, 20, 21, 0.9);
+  backdrop-filter: blur(6px);
+
+  border-radius: 14px;
+  padding: 18px 14px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  text-align: center;
+
+  border: 1px solid rgba(0, 182, 159, 0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+
+  cursor: pointer;
+  transition: 
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+
+  /* 🖼 Иконка */
+  img {
+    width: 54px;
+    height: auto;
+
+    filter: brightness(0) saturate(100%) invert(59%) sepia(92%)
+      saturate(748%) hue-rotate(126deg)
+      brightness(92%) contrast(93%);
+
+    transition: transform 0.25s ease;
+  }
+
+  /* 📝 Текст */
+  .service-about {
+    display: flex;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* ✨ Hover */
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(0, 182, 159, 0.25);
+    border-color: #00b69f;
+    background: rgba(20, 20, 21, 1);
+
+    img {
+      transform: scale(1.1);
+    }
+  }
+
+  /* 👆 Active (mobile) */
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
