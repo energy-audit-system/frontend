@@ -1,0 +1,49 @@
+.swiper {
+  padding-bottom: 40px;
+}
+
+.equipment-card {
+  height: 100%;
+  padding: 22px;
+  margin: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 182, 159, 0.35);
+  border-radius: 22px;
+  backdrop-filter: blur(10px);
+
+  color: white;
+  text-align: center;
+
+  h5 {
+    font-size: 16px;
+    height: 50px;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    object-fit: cover;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+.equipment-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* сколько строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Точки */
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background: #00b69f;
+}
