@@ -54,6 +54,7 @@
 .about__title {
   font-size: clamp(32px, 4.5vw, 56px);
   font-weight: 700;
+  margin-top: 0;
   margin-bottom: 20px;
   color: #00b69f;
 }
@@ -88,8 +89,8 @@ p {
 
 /* 🧩 Карточка услуги */
 .service-card {
-  width: 180px;
-  min-height: 160px;
+  width: calc(5.4vw + 76.8px);
+  min-height: calc(5vw + 64px);
 
   background: rgba(20, 20, 21, 0.9);
   backdrop-filter: blur(6px);
@@ -131,7 +132,7 @@ p {
   .service-about {
     display: flex;
     text-align: center;
-    font-size: 13px;
+    font-size: calc(0.2vw + 9.4px);
     line-height: 1.35;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);

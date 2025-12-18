@@ -1,5 +1,6 @@
 .modal-overlay {
   position: fixed;
+  padding: 20px calc(23.8vw - 56px);
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
