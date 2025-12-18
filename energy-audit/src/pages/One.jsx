@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import "../styles/page.scss";
-
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 export default function One() {
   const aboutRef = useRef(null);
-
+  const titleRef = useScrollAnimation();
+  const textRef = useScrollAnimation();
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

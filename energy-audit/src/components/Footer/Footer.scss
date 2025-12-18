@@ -21,19 +21,13 @@
       width: auto;
       cursor: pointer;
 
-      filter: brightness(0) saturate(100%)
-              invert(33%) sepia(24%)
-              saturate(588%) hue-rotate(124deg)
-              brightness(92%) contrast(90%);
+      filter: brightness(0) saturate(100%) invert(33%) sepia(24%) saturate(588%) hue-rotate(124deg) brightness(92%) contrast(90%);
 
       transition: transform 0.2s ease, filter 0.2s ease;
 
       &:hover {
         transform: scale(1.1);
-        filter: brightness(0) saturate(100%)
-                invert(59%) sepia(92%)
-                saturate(748%) hue-rotate(126deg)
-                brightness(92%) contrast(93%);
+        filter: brightness(0) saturate(100%) invert(59%) sepia(92%) saturate(748%) hue-rotate(126deg) brightness(92%) contrast(93%);
       }
     }
   }
@@ -41,7 +35,7 @@
   &__container {
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: calc(1.8vw - 4.8px);
     justify-content: space-between;
   }
 
