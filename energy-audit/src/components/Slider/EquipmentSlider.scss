@@ -47,3 +47,30 @@
 .swiper-pagination-bullet-active {
   background: #00b69f;
 }
+
+
+
+.swiper-button-prev,
+.swiper-button-next {
+  
+  color: #00b69f;
+  width: 18px;
+  height: 18px;
+padding: 10px;
+  background: rgba(0, 182, 159, 0.15);
+  border-radius: 50%;
+  backdrop-filter: blur(6px);
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 182, 159, 0.35);
+    transform: scale(1.05);
+  }
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 18px;
+  font-weight: bold;
+}

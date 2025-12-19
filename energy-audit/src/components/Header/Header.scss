@@ -18,7 +18,6 @@
     display: none;
   }
 
-
   /* Верхняя строка */
   .User {
     display: flex;
@@ -85,6 +84,58 @@
   }
 
   .btn-link {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+    padding: 8px 12px;
+
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+
+    background: transparent;
+    border: none;
+
+    transition: color 0.2s ease;
+
+    /* линия */
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+
+      width: 0;
+      height: 2px;
+      background: #00b69f;
+
+      transition: all 0.25s ease;
+      transform: translateX(-50%);
+    }
+
+    &:hover {
+      color: #ffffff;
+
+      &::after {
+        width: 100%;
+      }
+    }
+
+    &.active {
+      color: #00b69f;
+
+      &::after {
+        width: 100%;
+        background: #00b69f;
+      }
+    }
+  }
+/*
+  .btn-link {
     display: flex;
     justify-content: center;
     flex: 1;
@@ -114,12 +165,12 @@
       border-color: #00b69f;
     }
   }
+    */
 }
 
 /* 📱 Адаптация под мобильные */
 @media (max-width: 780px) {
   .header {
-
     /* 🍔 Бургер кнопка */
     .burger {
       display: flex;
@@ -141,8 +192,6 @@
         border-radius: 2px;
       }
     }
-
-
 
     .User {
       flex-direction: flex;

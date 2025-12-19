@@ -1,15 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
-
+import "swiper/css/navigation";
 import "./EquipmentSlider.scss";
 
 export default function EquipmentSlider({ slides }) {
   return (
     <Swiper
-      modules={[Pagination]}
+      modules={[Navigation, Pagination]}
+      navigation
       spaceBetween={24}
       pagination={{ clickable: true }}
       grabCursor
@@ -20,12 +21,12 @@ export default function EquipmentSlider({ slides }) {
         1200: { slidesPerView: 3 },
       }}
     >
-      {slides.map((slide, index) => (
+      {slides.map((item, index) => (
         <SwiperSlide key={index}>
           <div className="equipment-card">
-            <img src={slide.image} alt={slide.title} />
-            <h5>{slide.title}</h5>
-            <p>{slide.text}</p>
+            <img src={item.image} alt={item.title} />
+            <h5>{item.title}</h5>
+            <p>{item.text}</p>
           </div>
         </SwiperSlide>
       ))}
