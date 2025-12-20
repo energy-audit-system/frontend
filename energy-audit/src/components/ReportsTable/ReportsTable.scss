@@ -1,12 +1,12 @@
 .table-wrapper {
-  max-width: 900px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 1fr 200px;
-  background: #177fb0;
+  grid-template-columns: 1fr 98px;
+background: rgba(20, 20, 21, 0.9);
   color: #fff;
   padding: 10px;
   font-weight: bold;
@@ -14,16 +14,17 @@
 span{
     text-align: left;
     font-size: 18px;
+  color: #fff;
 
 }
 .table-row {
   display: grid;
   grid-template-columns: 1fr 200px;
   padding: 10px;
-  background: #fff;
+background: rgba(20, 20, 21, 0.9);
 
   &:nth-child(even) {
-    background: #f2f2f2;
+    background: #333;
   }
 }
 
@@ -40,20 +41,37 @@ span{
   font-size: 16px;
 }
 
+.row-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.status-label {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Статусы */
 .status {
-  width: 100px;
+      display: flex;
+    text-align: center;
+    justify-content: center;
+        width: 100%;
   padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  text-align: center;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
 
   &.done {
-    background: #00c853;
-    color: white;
+
+    background: rgba(0, 182, 159, 0.2);
+    color: #00b69f;
   }
 
   &.progress {
-    background: #ffb300;
-    color: white;
+    background: rgba(255, 184, 0, 0.2);
+    color: #ffb800;
   }
 }

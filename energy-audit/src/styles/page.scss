@@ -4,39 +4,42 @@
   text-align: center;
   color: #333;
 }
-  .Report{
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: flex-end;
-  }
-
-  .btn-report {
-    width: 155px;
-    padding: 11px 20px;
-    background-color: #0094ff;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
-    border: 1px solid #0094ff;    
-    transition: all 0.2s ease;
-    text-align: center;
-
-      &:hover {
-      background-color: #ffffff;  
-      border-color: #0094ff;  
-      border: 1px solid #0094ff;   
-      color: #0094ff;     
-    }
-  }
-.About{
-    padding: 20px calc(23.8vw - 56px);
-    font-size: calc(0.3vw + 13.2px);
+.Report {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
 }
-.about__title{
-    font-size: calc(1.5vw + 18.4px);
-    margin-bottom: calc(0.6vw + 8px);
+
+.btn-report {
+  padding: 8px 22px;
+  min-width: 140px;
+
+  background: rgba(0, 182, 159, 0.15);
+  color: #ffffff;
+  font-weight: 600;
+
+  border-radius: 10px;
+  border: 1px solid rgba(0, 182, 159, 0.4);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    background: rgba(0, 182, 159, 0.35);
+    border-color: #00b69f;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+}
+.About {
+  padding: 20px calc(23.8vw - 56px);
+  font-size: calc(0.3vw + 13.2px);
+}
+.about__title {
+  font-size: calc(1.5vw + 18.4px);
+  margin-bottom: calc(0.6vw + 8px);
 }
 /* СКРЫТО */
 .hidden {
@@ -58,7 +61,16 @@
   margin-bottom: 20px;
   color: #00b69f;
 }
-
+.text-report {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #00b69f;
+}
 p {
   text-align: justify;
   line-height: 1.55;
@@ -110,20 +122,16 @@ p {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 
   cursor: pointer;
-  transition: 
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    border-color 0.25s ease, background 0.25s ease;
 
   /* 🖼 Иконка */
   img {
     width: 54px;
     height: auto;
 
-    filter: brightness(0) saturate(100%) invert(59%) sepia(92%)
-      saturate(748%) hue-rotate(126deg)
-      brightness(92%) contrast(93%);
+    filter: brightness(0) saturate(100%) invert(59%) sepia(92%) saturate(748%)
+      hue-rotate(126deg) brightness(92%) contrast(93%);
 
     transition: transform 0.25s ease;
   }
@@ -158,11 +166,10 @@ p {
 
 @media (max-width: 650px) {
   .services {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 30px;
+  }
 }
-}
-  

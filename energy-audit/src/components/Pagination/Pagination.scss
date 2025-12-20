@@ -1,24 +1,58 @@
 .pagination {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
 
-  button {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #0094ff;
-    background: white;
-    cursor: pointer;
+/* Кнопки */
+.pagination button {
+  min-width: 37px;
+  height: 37px;
 
-    &.active {
-      background: #0094ff;
-      color: white;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+
+  border: 1px solid rgba(0, 182, 159, 0.35);
+  border-radius: 10px;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 182, 159, 0.3);
+    border-color: #00b69f;
+    color: #ffffff;
   }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+/* Активная */
+.pagination button.active {
+  background: #00b69f;
+  color: #003d36;
+  border-color: #00b69f;
+}
+
+/* Стрелки */
+.pagination .nav {
+  font-size: 16px;
+}
+
+/* Многоточие */
+.pagination .dots {
+  padding: 0 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
 }
