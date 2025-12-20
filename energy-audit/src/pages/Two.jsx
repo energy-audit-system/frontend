@@ -1,6 +1,7 @@
 import "../styles/page.scss";
 import { useEffect, useState } from "react";
 import { apiGet } from "../hooks/link";
+import Loader from "../components/Loader/Loader";
 
 export default function Two() {
   const [orders, setOrders] = useState([]);
@@ -23,7 +24,7 @@ export default function Two() {
     getOrders();
   }, []);
 
-  if (loading) return <div className="page">Загрузка...</div>;
+  if (loading) return <Loader fullscreen={true} />;
   if (error) return <div className="page">{error}</div>;
 
   return (

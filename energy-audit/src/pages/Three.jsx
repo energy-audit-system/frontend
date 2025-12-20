@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ReportsTable from "../components/ReportsTable/ReportsTable";
 import "../components/Header/Header.scss";
 import { apiGet } from "../hooks/link";
+import Loader from "../components/Loader/Loader";
 
 
 export default function Three() {
@@ -28,6 +29,7 @@ export default function Three() {
 
     getReports();
   }, []);
+   if (loading) return <Loader />;
  console.log(reports);
  
   const start = (page - 1) * perPage;
@@ -36,6 +38,7 @@ export default function Three() {
   if (loading) {
     return (
       <div className="page">
+
         <p className="text-report">Загрузка...</p>
       </div>
     );

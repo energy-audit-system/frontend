@@ -1,17 +1,35 @@
-const API_BASE_URL = "https://88f103ccb50a.ngrok-free.app";
+// src/hooks/link.js
 
-export async function apiGet(endpoint) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: "GET",
+const BASE_URL = "https://88f103ccb50a.ngrok-free.app";
+
+// универсальный request
+async function request(url, options = {}) {
+  const res = await fetch(`${BASE_URL}${url}`, {
     headers: {
-      Accept: "application/json",
-      "ngrok-skip-browser-warning": "true",
+      "Content-Type": "application/json",
+      ...options.headers,
     },
+    ...options,
   });
 
-  if (!response.ok) {
-    throw new Error(`HTTP error: ${response.status}`);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.detail || "Ошибка запроса");
   }
 
-  return response.json();
+  return data;
 }
+
+// GET
+export const apiGet = (url) =>
+  request(url, {
+    method: "GET",
+  });
+
+// POST
+export const apiPost = (url, body) =>
+  request(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
