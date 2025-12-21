@@ -1,7 +1,12 @@
 import "../styles/page.scss";
-import Loader from "../components/Loader/Loader";
+
 export default function Four() {
+
+
   return (
-    <Loader />
+    <div className="page">
+      <h2 className="about__title">Страница 4</h2>
+    </div>
   );
 }
+
