@@ -1,5 +1,5 @@
 import "./Loader.scss";
-import loaderVideo from "./Loader.webm";
+import loaderVideo from "./Loader.gif";
 
 export default function Loader({ fullscreen = true }) {
   return (
