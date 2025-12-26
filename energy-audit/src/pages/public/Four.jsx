@@ -1,4 +1,4 @@
-import "../styles/page.scss";
+import "../../styles/page.scss";
 
 export default function Four() {
 

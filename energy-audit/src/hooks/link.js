@@ -1,6 +1,6 @@
 // src/hooks/link.js
 
-const BASE_URL = "https://88f103ccb50a.ngrok-free.app";
+const BASE_URL = "http://localhost:5000";
 
 // универсальный request
 async function request(url, options = {}) {
@@ -12,14 +12,21 @@ async function request(url, options = {}) {
     ...options,
   });
 
-  const data = await res.json();
+  let data = null;
+  const text = await res.text();
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
 
   if (!res.ok) {
-    throw new Error(data.detail || "Ошибка запроса");
+    throw new Error(data?.detail || data?.message || "Ошибка запроса");
   }
 
   return data;
 }
+
 
 // GET
 export const apiGet = (url) =>

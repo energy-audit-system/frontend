@@ -1,15 +1,15 @@
-import "../styles/page.scss";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import image1 from "../image/121212.png";
-import img1 from "../image/DT-874.png";
-import img2 from "../image/UNI-Tut285c.png";
-import img3 from "../image/DT-9680.png";
-import img4 from "../image/DT-9481.png";
-import img5 from "../image/DT-8809A.png";
-import img6 from "../image/GD-3306.png";
-import img7 from "../image/DT-8836.png";
-import img8 from "../image/LDM-100H.png";
-import EquipmentSlider from "../components/Slider/EquipmentSlider";
+import "../../styles/page.scss";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import image1 from "../../image/121212.png";
+import img1 from "../../image/DT-874.png";
+import img2 from "../../image/UNI-Tut285c.png";
+import img3 from "../../image/DT-9680.png";
+import img4 from "../../image/DT-9481.png";
+import img5 from "../../image/DT-8809A.png";
+import img6 from "../../image/GD-3306.png";
+import img7 from "../../image/DT-8836.png";
+import img8 from "../../image/LDM-100H.png";
+import EquipmentSlider from "../../components/Slider/EquipmentSlider";
 export default function One() {
   const aboutRef = useScrollAnimation();
   const missionRef = useScrollAnimation();

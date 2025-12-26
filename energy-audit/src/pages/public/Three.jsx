@@ -1,9 +1,9 @@
-import "../styles/page.scss";
+import "../../styles/page.scss";
 import { useEffect, useState } from "react";
-import ReportsTable from "../components/ReportsTable/ReportsTable";
-import "../components/Header/Header.scss";
-import { apiGet } from "../hooks/link";
-import Loader from "../components/Loader/Loader";
+import ReportsTable from "../../components/ReportsTable/ReportsTable";
+import "../../components/Header/Header.scss";
+import { apiGet } from "../../hooks/link";
+import Loader from "../../components/Loader/Loader";
 
 
 export default function Three() {

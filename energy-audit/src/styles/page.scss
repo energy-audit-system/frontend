@@ -164,6 +164,156 @@ p {
   }
 }
 
+
+
+/* ================= CLIENT LAYOUT ================= */
+.client-layout {
+  display: flex;
+  justify-content: center;
+}
+
+.client-main {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ================= TITLE ================= */
+.client-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ================= FORM ================= */
+.client-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 182, 159, 0.35);
+  border-radius: 14px;
+}
+
+/* ================= INPUT ================= */
+.client-input {
+  padding: 12px 14px;
+  background: #1e1e20;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    border-color: #00b69f;
+  }
+}
+
+/* ================= SUBMIT BUTTON ================= */
+.client-submit-btn {
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #00b69f;
+  color: #00b69f;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: #00b69f;
+    color: #0b0b0b;
+  }
+}
+
+/* ================================================= */
+/* =============== CUSTOM SELECT =================== */
+/* ================================================= */
+
+.client-select {
+  position: relative;
+}
+
+/* VALUE (закрытое состояние) */
+.client-select__value {
+  padding: 12px 14px;
+  background: #1e1e20;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* активное состояние */
+.client-select.open .client-select__value {
+  border-color: #00b69f;
+  color: #fff;
+}
+
+/* стрелка */
+.client-select__arrow {
+  transition: transform 0.25s ease;
+}
+
+.client-select.open .client-select__arrow {
+  transform: rotate(180deg);
+}
+
+/* ================= DROPDOWN ================= */
+.client-select__dropdown {
+  position: absolute;
+  top: 43px;
+  left: 0;
+  right: 0;
+  border: none;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 10px 10px;
+  padding: 6px 0;
+  margin: 0;
+  list-style: none;
+  z-index: 10;
+
+  /* animation */
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* open state */
+.client-select.open .client-select__dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ================= OPTIONS ================= */
+.client-select__dropdown li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #bdbdbd;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.client-select__dropdown li:hover {
+  background: rgba(0, 182, 159, 0.15);
+  color: #00b69f;
+}
+
+
 @media (max-width: 650px) {
   .services {
     display: flex;
