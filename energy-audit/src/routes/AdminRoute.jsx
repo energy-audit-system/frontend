@@ -1,13 +1,28 @@
 import { Navigate, useLocation } from "react-router-dom";
 
+/**
+ * AdminRoute
+ * Защищает админские роуты
+ * Пускает ТОЛЬКО если user.role === "admin"
+ */
 export default function AdminRoute({ children }) {
   const location = useLocation();
-  const rawUser = localStorage.getItem("user");
-  const user = rawUser ? JSON.parse(rawUser) : null;
 
+  // Получаем user из localStorage
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  // Если нет пользователя или он не админ — редирект
   if (!user || user.role !== "admin") {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to="/"
+        replace
+        state={{ from: location }}
+      />
+    );
   }
 
+  // Если всё ок — рендерим админку
   return children;
 }
