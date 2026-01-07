@@ -52,6 +52,8 @@ const TYPE_OPTIONS = {
 export default function ClientReport() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [title, setTitle] = useState("");
+
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isSubTypeOpen, setIsSubTypeOpen] = useState(false);
 
@@ -73,11 +75,18 @@ export default function ClientReport() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const isFormValid =
+    title.trim() !== "" &&
+    selectedType !== "Тип объекта" &&
+    selectedSubType !== "Подтип";
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isFormValid) return;
     setIsModalOpen(true);
   };
 
@@ -93,7 +102,8 @@ export default function ClientReport() {
               className="client-input"
               type="text"
               placeholder="Название"
-              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
 
             {/* SELECT: Тип объекта */}
@@ -125,15 +135,19 @@ export default function ClientReport() {
               </ul>
             </div>
 
-            {/* SELECT: Подтип (появляется после выбора типа) */}
+            {/* SELECT: Подтип */}
             {selectedType !== "Тип объекта" && (
               <div
-                className={`client-select ${isSubTypeOpen ? "open" : ""}`}
+                className={`client-select ${
+                  isSubTypeOpen ? "open" : ""
+                }`}
                 ref={subTypeRef}
               >
                 <div
                   className="client-select__value"
-                  onClick={() => setIsSubTypeOpen(!isSubTypeOpen)}
+                  onClick={() =>
+                    setIsSubTypeOpen(!isSubTypeOpen)
+                  }
                 >
                   {selectedSubType}
                   <span className="client-select__arrow">▾</span>
@@ -155,17 +169,28 @@ export default function ClientReport() {
               </div>
             )}
 
-            <button className="client-submit-btn" type="submit">
+            <button
+              className="client-submit-btn"
+              type="submit"
+              disabled={!isFormValid}
+            >
               Сформировать
             </button>
           </form>
 
           {/* MODAL */}
-          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          >
             <h5>Вы готовы сформировать отчет?</h5>
             <div className="modal__content">
-              <button onClick={() => setIsModalOpen(false)}>Да</button>
-              <button onClick={() => setIsModalOpen(false)}>Нет</button>
+              <button onClick={() => setIsModalOpen(false)}>
+                Да
+              </button>
+              <button onClick={() => setIsModalOpen(false)}>
+                Нет
+              </button>
             </div>
           </Modal>
         </main>
