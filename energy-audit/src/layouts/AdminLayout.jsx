@@ -1,23 +1,45 @@
 import { useState } from "react";
 import "../styles/admin.scss";
-import Modal from "../components//Modal/Modal";
+import Modal from "../components/Modal/Modal";
 
 export default function AdminLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [fields, setFields] = useState([
+    { name: "", value: "" },
+  ]);
+
+const handleAddField = () => {
+  const lastField = fields[fields.length - 1];
+
+  if (!lastField.name.trim() || !lastField.value.toString().trim()) {
+    return; // не добавляем новую строку
+  }
+
+  setFields([...fields, { name: "", value: "" }]);
+};
+const lastField = fields[fields.length - 1];
+const isAddDisabled =
+  !lastField.name.trim() || !lastField.value.toString().trim();
+
+
+  const handleChange = (index, key, value) => {
+    const updated = [...fields];
+    updated[index][key] = value;
+    setFields(updated);
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setIsModalOpen(true); // открываем модалку
+    setIsModalOpen(true);
   };
 
   const handleConfirm = () => {
-    // действия при нажатии "Да"
-    console.log("Отчет сформирован!");
+    console.log("Данные:", fields);
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
-    // действия при нажатии "Нет"
     setIsModalOpen(false);
   };
 
@@ -34,34 +56,50 @@ export default function AdminLayout() {
       </aside>
 
       <main className="admin-main">
-        {/* HEADER ADMIN PAGE */}
         <div className="admin-header">
           <h1 className="admin-title">Админ панель</h1>
-          <button className="admin-add-btn">Добавить</button>
         </div>
 
-        {/* FORM (появляется после клика "Добавить") */}
         <form className="admin-form" onSubmit={handleFormSubmit}>
-          <input
-            className="admin-input"
-            type="text"
-            placeholder="Название"
-            required
-          />
+          {fields.map((field, index) => (
+            <div className="admin-row" key={index}>
+              <input
+                className="admin-input"
+                type="text"
+                placeholder="Название"
+                value={field.name}
+                onChange={(e) =>
+                  handleChange(index, "name", e.target.value)
+                }
+                required
+              />
 
-          <input
-            className="admin-input"
-            type="number"
-            placeholder="Значение"
-            required
-          />
+              <input
+                className="admin-input"
+                type="number"
+                placeholder="Значение"
+                value={field.value}
+                onChange={(e) =>
+                  handleChange(index, "value", e.target.value)
+                }
+                required
+              />
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="admin-add-btn"
+            onClick={handleAddField}
+          >
+            Добавить
+          </button>
 
           <button className="admin-submit-btn" type="submit">
             Сформировать
           </button>
         </form>
 
-        {/* МОДАЛЬНОЕ ОКНО */}
         <Modal isOpen={isModalOpen} onClose={handleCancel}>
           <h2>Вы готовы сформировать отчет?</h2>
           <div className="modal__content">

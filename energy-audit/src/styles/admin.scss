@@ -1,3 +1,10 @@
+/* GLOBAL FIX */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* LAYOUT */
 .admin-layout {
   display: flex;
@@ -8,7 +15,7 @@
 
 /* SIDEBAR */
 .admin-sidebar {
-  width: 240px;
+  width: calc(8.1vw + 84px);
   background: #111;
   padding: 20px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -39,6 +46,7 @@
 .admin-main {
   flex: 1;
   padding: 24px;
+  min-width: 0; /* важно для flex-layout */
 }
 
 /* HEADER */
@@ -68,13 +76,20 @@
   &:hover {
     background: #00d1b2;
   }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 }
 
 /* FORM */
 .admin-form {
-  max-width: 420px;
+  width: 100%;
+  max-width: 520px;
   padding: 20px;
   margin-bottom: 40px;
+
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -84,8 +99,18 @@
   border-radius: 14px;
 }
 
+/* ROW OF INPUTS */
+.admin-row {
+  display: flex;
+  gap: 12px;
+}
+
 /* INPUTS */
 .admin-input {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+
   padding: 12px 14px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -117,5 +142,24 @@
   &:hover {
     background: #00b69f;
     color: #0b0b0b;
+  }
+}
+
+/* ADAPTIVE */
+@media (max-width: 768px) {
+  .admin-row {
+    flex-direction: column;
+  }
+
+  .admin-main {
+    padding: 16px;
+  }
+
+  .admin-form {
+    padding: 16px;
+  }
+
+  .admin-input {
+    font-size: 16px; /* чтобы iOS не зумил */
   }
 }
