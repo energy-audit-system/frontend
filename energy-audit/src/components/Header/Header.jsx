@@ -1,5 +1,5 @@
 // src/components/Header/Header.jsx
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 import logo from "../../image/header_logo_down1.png";
@@ -20,46 +20,38 @@ import {
 const LS_UI = "header_ui_state";
 
 export default function Header() {
-  // =========================
-  // UI state (модалки)
-  // =========================
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // UI
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
 
-  // =========================
-  // Auth state (ВАЖНО)
-  // =========================
+  // AUTH
   const [authUser, setAuthUser] = useState(() => {
     const u = loadUser();
     console.log("[Header] init authUser from storage:", u);
     return u;
   });
 
-  // =========================
-  // Регистрация
-  // =========================
+  // Register
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // шаг регистрации
-  const [registerStep, setRegisterStep] = useState("form"); // "form" | "verify"
+  const [registerStep, setRegisterStep] = useState("form");
   const [verifyToken, setVerifyToken] = useState("");
 
-  // =========================
-  // Логин
-  // =========================
+  // Login
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
 
-  // =========================
-  // Restore UI state
-  // =========================
+  // Restore UI + authUser once
   useEffect(() => {
     const savedToken = getToken();
     if (savedToken) console.log("[Header] restore token:", savedToken);
@@ -87,12 +79,24 @@ export default function Header() {
       }
     }
 
-    // на всякий случай синхронизируем authUser из storage
     const u = loadUser();
     if (u) setAuthUser(u);
   }, []);
 
-  // Save UI state
+  // ✅ Единственное место редиректа админа (без циклов)
+  useEffect(() => {
+    if (!authUser) return;
+
+    const isAdmin = authUser.role === "engineer";
+    const alreadyOnAdmin = location.pathname.startsWith("/admin");
+
+    if (isAdmin && !alreadyOnAdmin) {
+      console.log("[Header] admin detected -> redirect /admin");
+      navigate("/admin", { replace: true });
+    }
+  }, [authUser, location.pathname, navigate]);
+
+  // Save UI
   useEffect(() => {
     const ui = {
       isLoginOpen,
@@ -120,20 +124,18 @@ export default function Header() {
     loginPassword,
   ]);
 
-  // ✅ helper: сохранить user так, чтобы React точно перерисовался
+  // Save user to storage + state (без навигации здесь!)
   const commitUser = (u) => {
     console.log("[Header] commitUser ->", u);
     if (!u) return;
-    saveUser(u);      // localStorage
-    setAuthUser(u);   // ✅ state -> UI перерисуется
+
+    const { token, access_token, ...userOnly } = u;
+    saveUser(userOnly);
+    setAuthUser(userOnly);
   };
 
-  // =========================
-  // Регистрация (POST /auth/register)
-  // =========================
+  // Register
   const handleRegister = async () => {
-    console.log("[Header] register click", { regName, regEmail });
-
     setLoading(true);
     setError("");
 
@@ -150,12 +152,7 @@ export default function Header() {
       setRegisterStep("verify");
       setRegPassword("");
 
-      // сохраним пользователя (он ещё не верифицирован — но нам это ок для шага verify)
       if (data?.user) commitUser(data.user);
-
-      if (data?.email_verification_token) {
-        console.log("[Header] email_verification_token:", data.email_verification_token);
-      }
     } catch (err) {
       console.log("[Header] register error:", err);
       setError(err.message);
@@ -164,55 +161,39 @@ export default function Header() {
     }
   };
 
-  // =========================
-  // Verify (GET /auth/verify-email?token=...)
-  // =========================
-const handleVerifyEmail = async () => {
-  console.log("[Header] verify click", verifyToken);
-
-  if (!verifyToken.trim()) {
-    setError("Введите токен из письма");
-    return;
-  }
-
-  setLoading(true);
-  setError("");
-
-  try {
-    const data = await verifyEmailRequest(verifyToken.trim());
-    console.log("[Header] verify response:", data);
-
-    // ✅ у тебя токен приходит как data.token
-    const tokenFromServer = data?.token || data?.access_token;
-    if (tokenFromServer) setToken(tokenFromServer);
-
-    // ✅ ВАЖНО: бэк возвращает юзера не в data.user, а прямо объектом
-    const userFromServer = data?.user || data;
-
-    // ✅ если вдруг вернулся только token без полей пользователя
-    if (userFromServer && (userFromServer.full_name || userFromServer.email)) {
-      commitUser(userFromServer);
-    } else if (authUser) {
-      commitUser(authUser);
+  // Verify (у тебя ответ = user object + token)
+  const handleVerifyEmail = async () => {
+    if (!verifyToken.trim()) {
+      setError("Введите токен из письма");
+      return;
     }
 
-    setIsRegisterOpen(false);
-    setRegisterStep("form");
-    setVerifyToken("");
-  } catch (err) {
-    console.log("[Header] verify error:", err);
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    setError("");
 
-  // =========================
-  // Login (GET /auth/login?email=...&password=...)
-  // =========================
+    try {
+      const data = await verifyEmailRequest(verifyToken.trim());
+      console.log("[Header] verify response:", data);
+
+      const tokenFromServer = data?.token || data?.access_token;
+      if (tokenFromServer) setToken(tokenFromServer);
+
+      const userFromServer = data?.user || data;
+      commitUser(userFromServer);
+
+      setIsRegisterOpen(false);
+      setRegisterStep("form");
+      setVerifyToken("");
+    } catch (err) {
+      console.log("[Header] verify error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Login (POST)
   const handleLogin = async () => {
-    console.log("[Header] login click", { loginEmail });
-
     setLoginLoading(true);
     setLoginError("");
 
@@ -225,15 +206,13 @@ const handleVerifyEmail = async () => {
       console.log("[Header] login response:", data);
 
       const tokenFromServer = data?.token || data?.access_token;
-      const userFromServer = data?.user || data;
-
       if (tokenFromServer) setToken(tokenFromServer);
 
+      const userFromServer = data?.user || data;
       if (userFromServer?.is_email_verified === false) {
         throw new Error("Подтвердите почту перед входом.");
       }
 
-      // ✅ кладём в state
       commitUser(userFromServer);
 
       setIsLoginOpen(false);
@@ -247,14 +226,10 @@ const handleVerifyEmail = async () => {
     }
   };
 
-  // =========================
   // Logout
-  // =========================
   const handleLogout = () => {
-    console.log("[Header] logout");
-
-    setAuthUser(null); // ✅ state
-    clearUser();       // storage
+    setAuthUser(null);
+    clearUser();
     clearToken();
 
     setIsLoginOpen(false);
@@ -263,6 +238,8 @@ const handleVerifyEmail = async () => {
 
     setRegisterStep("form");
     setVerifyToken("");
+
+    navigate("/", { replace: true });
   };
 
   const goToGmail = () => {
@@ -321,16 +298,10 @@ const handleVerifyEmail = async () => {
           <div className="modal-User-buttons">
             {!authUser ? (
               <>
-                <button
-                  className="btn-user"
-                  onClick={() => { setIsRegisterOpen(true); setIsBurgerOpen(false); }}
-                >
+                <button className="btn-user" onClick={() => { setIsRegisterOpen(true); setIsBurgerOpen(false); }}>
                   Регистрация
                 </button>
-                <button
-                  className="btn-user"
-                  onClick={() => { setIsLoginOpen(true); setIsBurgerOpen(false); }}
-                >
+                <button className="btn-user" onClick={() => { setIsLoginOpen(true); setIsBurgerOpen(false); }}>
                   Войти
                 </button>
               </>
@@ -358,18 +329,8 @@ const handleVerifyEmail = async () => {
 
       {/* Login */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} title="Войти">
-        <input
-          type="email"
-          placeholder="Email"
-          value={loginEmail}
-          onChange={(e) => setLoginEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Пароль"
-          value={loginPassword}
-          onChange={(e) => setLoginPassword(e.target.value)}
-        />
+        <input type="email" placeholder="Email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+        <input type="password" placeholder="Пароль" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
 
         {loginError && <p style={{ color: "red" }}>{loginError}</p>}
 
@@ -386,24 +347,9 @@ const handleVerifyEmail = async () => {
       >
         {registerStep === "form" ? (
           <>
-            <input
-              type="text"
-              placeholder="Имя"
-              value={regName}
-              onChange={(e) => setRegName(e.target.value)}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={regEmail}
-              onChange={(e) => setRegEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Пароль"
-              value={regPassword}
-              onChange={(e) => setRegPassword(e.target.value)}
-            />
+            <input type="text" placeholder="Имя" value={regName} onChange={(e) => setRegName(e.target.value)} />
+            <input type="email" placeholder="Email" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} />
+            <input type="password" placeholder="Пароль" value={regPassword} onChange={(e) => setRegPassword(e.target.value)} />
 
             {error && <p style={{ color: "red" }}>{error}</p>}
 
