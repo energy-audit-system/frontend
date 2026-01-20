@@ -267,7 +267,7 @@ export default function Header() {
             ) : (
               <>
                 <span className="btn-user">
-                  Привет, {authUser.full_name || authUser.email}
+                  {authUser.full_name || authUser.email}
                 </span>
                 <button className="btn-user" onClick={handleLogout}>
                   Выйти
@@ -284,11 +284,11 @@ export default function Header() {
         </div>
 
         <nav className="desktop-only">
-          <NavLink to="/" className="btn-link">Один</NavLink>
-          <NavLink to="/two" className="btn-link">Два</NavLink>
-          <NavLink to="/three" className="btn-link">Три</NavLink>
-          <NavLink to="/four" className="btn-link">Четыре</NavLink>
-          <NavLink to="/five" className="btn-link">Пять</NavLink>
+          <NavLink to="/" className="btn-link">О нас</NavLink>
+          <NavLink to="/two" className="btn-link">Услуги</NavLink>
+          <NavLink to="/three" className="btn-link">Наши работы</NavLink>
+          <NavLink to="/four" className="btn-link">Заявки</NavLink>
+          <NavLink to="/five" className="btn-link">Контакты</NavLink>
         </nav>
       </header>
 
@@ -308,7 +308,7 @@ export default function Header() {
             ) : (
               <>
                 <span className="btn-user">
-                  Привет, {authUser.full_name || authUser.email}
+                  {authUser.full_name || authUser.email}
                 </span>
                 <button className="btn-user" onClick={handleLogout}>
                   Выйти
@@ -318,11 +318,11 @@ export default function Header() {
           </div>
 
           <nav className="burger-nav">
-            <NavLink to="/" onClick={() => setIsBurgerOpen(false)} className="btn-link">Один</NavLink>
-            <NavLink to="/two" onClick={() => setIsBurgerOpen(false)} className="btn-link">Два</NavLink>
-            <NavLink to="/three" onClick={() => setIsBurgerOpen(false)} className="btn-link">Три</NavLink>
-            <NavLink to="/four" onClick={() => setIsBurgerOpen(false)} className="btn-link">Четыре</NavLink>
-            <NavLink to="/five" onClick={() => setIsBurgerOpen(false)} className="btn-link">Пять</NavLink>
+            <NavLink to="/" onClick={() => setIsBurgerOpen(false)} className="btn-link">О нас</NavLink>
+            <NavLink to="/two" onClick={() => setIsBurgerOpen(false)} className="btn-link">Услуги</NavLink>
+            <NavLink to="/three" onClick={() => setIsBurgerOpen(false)} className="btn-link">Наши работы</NavLink>
+            <NavLink to="/four" onClick={() => setIsBurgerOpen(false)} className="btn-link">Заявки</NavLink>
+            <NavLink to="/five" onClick={() => setIsBurgerOpen(false)} className="btn-link">Контакты</NavLink>
           </nav>
         </div>
       </Modal>
@@ -354,13 +354,13 @@ export default function Header() {
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             <button onClick={handleRegister} disabled={loading}>
-              {loading ? "Регистрация..." : "Зарегистрироваться"}
+              {loading ? "Регистрация..." : "ЗарегисНаши работыроваться"}
             </button>
           </>
         ) : (
           <>
             <p style={{ marginBottom: 10 }}>
-              ✅ Вы зарегистрировались. На почту <b>{regEmail}</b> отправлен токен.
+              ✅ Вы зарегисНаши работыровались. На почту <b>{regEmail}</b> отправлен токен.
             </p>
 
             <input

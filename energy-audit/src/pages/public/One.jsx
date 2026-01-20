@@ -1,6 +1,5 @@
 import "../../styles/page.scss";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
-import image1 from "../../image/121212.png";
 import img1 from "../../image/DT-874.png";
 import img2 from "../../image/UNI-Tut285c.png";
 import img3 from "../../image/DT-9680.png";
@@ -9,6 +8,12 @@ import img5 from "../../image/DT-8809A.png";
 import img6 from "../../image/GD-3306.png";
 import img7 from "../../image/DT-8836.png";
 import img8 from "../../image/LDM-100H.png";
+import shield from "../../image/shield.png";
+import star from "../../image/star.png";
+import lighting from "../../image/lighting.png";
+import handshake from "../../image/handshake.png";
+import leaf from "../../image/leaf.png";
+import multiple from "../../image/multiple.png";
 import EquipmentSlider from "../../components/Slider/EquipmentSlider";
 export default function One() {
   const aboutRef = useScrollAnimation();
@@ -60,63 +65,94 @@ export default function One() {
 
       <section className="About">
         <div className="Mission_container hidden" ref={missionRef}>
-          <h2 className="about__title">Наши услуги</h2>
+          <h2 className="about__title">Наша миссия</h2>
           <p>
-            dfasfsretg dsgerstg dstg erygh dfyh 5ryh dfghr5 hdfdfgdf dfg df hrty
-            dfgdfgeryt tdyhf dghd eryt eryhd hd hr5yretgdfgedryhgfdf rtehdf g
-            drtdf ger gfdg ergfdg rhdgdfh gdfzg erd gdfgdfgerdg g e4rtgfd ge4
-            gfsdgswwrw g 5rety eg ye46t fsdfghr gh r6du gh{" "}
+          Создавать инновационные и устойчивые строительные решения, которые превосходят ожидания наших клиентов и способствуют развитию Узбекистана. Мы стремимся быть лидером отрасли, устанавливая новые стандарты качества, безопасности и профессионализма в каждом проекте.{" "}
           </p>
-          <div className="services">
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>{" "}
-            <div className="service-card">
-              <img src={image1} alt="Прогноз энергопотребления" />
-              <span className="service-about">
-                Прогноз энергопотребления промышленных предприятий
-              </span>
-            </div>
-          </div>
+<div className="services">
+  <div className="service-card">
+    <div className="service-icon">
+      <img src={shield} alt="shield" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Надежность</h3>
+      <p className="service-text">
+        Мы выполняем обязательства в срок и гарантируем долговечность каждого
+        построенного объекта.
+      </p>
+    </div>
+  </div>
+    <div className="service-card">
+    <div className="service-icon">
+      <img src={star} alt="star" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Качество</h3>
+      <p className="service-text">
+        Используем только проверенные материалы и современные технологии для достижения высочайшего качества.
+      </p>
+    </div>
+  </div>
+    <div className="service-card">
+    <div className="service-icon">
+      <img src={lighting} alt="lighting" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Инновации</h3>
+      <p className="service-text">
+        Постоянно внедряем новые технологии и методы для повышения эффективности строительства.
+      </p>
+    </div>
+  </div>
+    <div className="service-card">
+    <div className="service-icon">
+      <img src={handshake} alt="handshake" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Партнерство</h3>
+      <p className="service-text">
+        Строим долгосрочные отношения с клиентами, основанные на доверии и взаимном уважении.
+      </p>
+    </div>
+  </div>
+    <div className="service-card">
+    <div className="service-icon">
+      <img src={leaf} alt="leaf" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Экологичность</h3>
+      <p className="service-text">
+        Заботимся об окружающей среде и применяем экологически чистые решения в строительстве.
+      </p>
+    </div>
+  </div>
+    <div className="service-card">
+    <div className="service-icon">
+      <img src={multiple} alt="multiple" />
+      {/* или вместо img потом вставишь svg */}
+    </div>
+
+    <div className="service-content">
+      <h3 className="service-title">Профессионализм</h3>
+      <p className="service-text">
+        Наша команда состоит из высококвалифицированных специалистов с многолетним опытом.
+      </p>
+    </div>
+  </div>
+
+  {/* ...остальные карточки так же */}
+</div>
+
         </div>
       </section>
 

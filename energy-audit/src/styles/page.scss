@@ -1,9 +1,81 @@
+/* =========================
+   BASE LAYOUT
+   ========================= */
+
 .page {
   padding: 20px calc(23.8vw - 56px);
   font-size: 32px;
   text-align: center;
   color: #333;
 }
+
+.About {
+  padding: 20px calc(23.8vw - 56px);
+  font-size: calc(0.3vw + 13.2px);
+}
+
+/* =========================
+   TITLES / TEXT
+   ========================= */
+
+.about__title {
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: #00b69f;
+}
+
+.text-report {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: #00b69f;
+}
+
+p {
+  text-align: justify;
+  line-height: 1.55;
+  color: #e2e2e2;
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+.hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   BUTTONS / REPORT
+   ========================= */
+
 .Report {
   display: flex;
   gap: 10px;
@@ -14,10 +86,12 @@
 .btn-report {
   padding: 8px 22px;
   min-width: 140px;
-
+  width: fit-content;
+  flex: 1;
   background: rgba(0, 182, 159, 0.15);
   color: #ffffff;
   font-weight: 600;
+  text-decoration: none;
 
   border-radius: 10px;
   border: 1px solid rgba(0, 182, 159, 0.4);
@@ -33,90 +107,37 @@
     transform: translateY(-1px);
   }
 }
-.About {
-  padding: 20px calc(23.8vw - 56px);
-  font-size: calc(0.3vw + 13.2px);
-}
-.about__title {
-  font-size: calc(1.5vw + 18.4px);
-  margin-bottom: calc(0.6vw + 8px);
-}
-/* СКРЫТО */
-.hidden {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease;
+
+.btn-report--ghost {
+  background: transparent;
 }
 
-/* ПОЯВЛЕНИЕ */
-.show {
-  opacity: 1;
-  transform: translateY(0);
+.btn-report--small {
+  padding: 8px 14px;
+  min-width: auto;
+  width: fit-content;
 }
 
-.about__title {
-  font-size: clamp(32px, 4.5vw, 56px);
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #00b69f;
-}
-.text-report {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  font-size: clamp(32px, 4.5vw, 56px);
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #00b69f;
-}
-p {
-  text-align: justify;
-  line-height: 1.55;
-  color: #e2e2e2;
-  margin-bottom: 14px;
+/* =========================
+   SERVICES GRID (extra services cards)
+   ========================= */
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.fade-up {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
-}
-
-.fade-up.show {
-  opacity: 1;
-  transform: translateY(0);
-}
 .services {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
   margin-top: 30px;
 }
 
-/* 🧩 Карточка услуги */
+/* Card */
 .service-card {
-  width: calc(5.4vw + 76.8px);
-  min-height: calc(5vw + 64px);
+  position: relative;
 
   background: rgba(20, 20, 21, 0.9);
   backdrop-filter: blur(6px);
 
-  border-radius: 14px;
-  padding: 18px 14px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  text-align: center;
+  border-radius: 18px;
+  padding: 26px 22px 22px;
 
   border: 1px solid rgba(0, 182, 159, 0.25);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
@@ -125,48 +146,82 @@ p {
   transition: transform 0.25s ease, box-shadow 0.25s ease,
     border-color 0.25s ease, background 0.25s ease;
 
-  /* 🖼 Иконка */
-  img {
-    width: 54px;
-    height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 
-    filter: brightness(0) saturate(100%) invert(59%) sepia(92%) saturate(748%)
-      hue-rotate(126deg) brightness(92%) contrast(93%);
-
-    transition: transform 0.25s ease;
-  }
-
-  /* 📝 Текст */
-  .service-about {
-    display: flex;
-    text-align: center;
-    font-size: calc(0.2vw + 9.4px);
-    line-height: 1.35;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  /* ✨ Hover */
   &:hover {
     transform: translateY(-6px);
     box-shadow: 0 14px 30px rgba(0, 182, 159, 0.25);
     border-color: #00b69f;
     background: rgba(20, 20, 21, 1);
 
-    img {
+    .service-icon img {
       transform: scale(1.1);
     }
   }
 
-  /* 👆 Active (mobile) */
   &:active {
     transform: scale(0.97);
   }
 }
 
+/* Icon plate */
+.service-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
 
+  background: rgba(0, 182, 159, 0.15);
+  border: 1px solid rgba(0, 182, 159, 0.35);
 
-/* ================= CLIENT LAYOUT ================= */
+  display: grid;
+  place-items: center;
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+
+  img {
+    width: 26px;
+    height: 26px;
+
+    filter: brightness(0) saturate(100%) invert(59%) sepia(92%)
+      saturate(748%) hue-rotate(126deg) brightness(92%) contrast(93%);
+
+    transition: transform 0.25s ease;
+  }
+}
+
+/* Placeholder dot for icons */
+.service-icon__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0, 182, 159, 0.85);
+}
+
+.service-title {
+  margin: 6px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.service-text {
+  font-size: 14px;
+  text-align: start;
+}
+
+.service-about {
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================
+   CLIENT FORM
+   ========================= */
+
 .client-layout {
   display: flex;
   justify-content: center;
@@ -177,26 +232,23 @@ p {
   max-width: 420px;
 }
 
-/* ================= TITLE ================= */
 .client-title {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
 }
 
-/* ================= FORM ================= */
 .client-form {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 
-background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(0, 182, 159, 0.35);
   border-radius: 14px;
 }
 
-/* ================= INPUT ================= */
 .client-input {
   padding: 12px 14px;
   background: #1e1e20;
@@ -215,7 +267,6 @@ background: rgba(0, 0, 0, 0.35);
   }
 }
 
-/* ================= SUBMIT BUTTON ================= */
 .client-submit-btn {
   padding: 12px;
   background: transparent;
@@ -232,15 +283,14 @@ background: rgba(0, 0, 0, 0.35);
   }
 }
 
-/* ================================================= */
-/* =============== CUSTOM SELECT =================== */
-/* ================================================= */
+/* =========================
+   CUSTOM SELECT
+   ========================= */
 
 .client-select {
   position: relative;
 }
 
-/* VALUE (закрытое состояние) */
 .client-select__value {
   padding: 12px 14px;
   background: #1e1e20;
@@ -255,13 +305,11 @@ background: rgba(0, 0, 0, 0.35);
   align-items: center;
 }
 
-/* активное состояние */
 .client-select.open .client-select__value {
   border-color: #00b69f;
   color: #fff;
 }
 
-/* стрелка */
 .client-select__arrow {
   transition: transform 0.25s ease;
 }
@@ -270,36 +318,33 @@ background: rgba(0, 0, 0, 0.35);
   transform: rotate(180deg);
 }
 
-/* ================= DROPDOWN ================= */
 .client-select__dropdown {
   position: absolute;
   top: 43px;
   left: 0;
   right: 0;
-  border: none;
+
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0 0 10px 10px;
+
   padding: 6px 0;
   margin: 0;
   list-style: none;
   z-index: 10;
 
-  /* animation */
   opacity: 0;
   transform: translateY(-8px);
   pointer-events: none;
   transition: all 0.2s ease;
 }
 
-/* open state */
 .client-select.open .client-select__dropdown {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-/* ================= OPTIONS ================= */
 .client-select__dropdown li {
   padding: 10px 14px;
   cursor: pointer;
@@ -313,13 +358,219 @@ background: rgba(0, 0, 0, 0.35);
   color: #00b69f;
 }
 
+/* =========================
+   SERVICES PAGE (hero + main blocks)
+   ========================= */
 
-@media (max-width: 650px) {
-  .services {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 30px;
+.services-page {
+  padding: 0;
+}
+
+.services-hero {
+  padding: 20px calc(23.8vw - 56px);
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+
+.about__title__service {
+font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  margin: 0 0 calc(0.6vw + 8px);
+  color: #00b69f;
+  text-align: start;
+}
+
+/* ✅ HERO: всегда grid (чтобы адаптив работал правильно) */
+.services-hero__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 26px;
+  align-items: center;
+}
+
+.services-hero__desc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: calc(0.3vw + 13.2px);
+  line-height: 1.55;
+  margin: 0 0 18px 0;
+}
+
+.services-hero__actions {
+  font-size: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.services-hero__media-box {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+
+  border-radius: 18px;
+  border: 1px solid rgba(0, 182, 159, 0.25);
+  background: rgba(20, 20, 21, 0.45);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.services-subtitle {
+  margin: 0 0 18px 0;
+  text-align: start;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(18px, 1.6vw, 26px);
+}
+
+/* MAIN SERVICES LIST */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.service-row {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 18px;
+
+  background: rgba(20, 20, 21, 0.55);
+  border: 1px solid rgba(0, 182, 159, 0.25);
+  border-radius: 18px;
+  overflow: hidden;
+
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.service-row__left {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.service-row__title {
+  margin: 0;
+  text-align: start;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.service-row__text {
+  margin: 0;
+  text-align: start;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.service-row__bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.75);
+
+  li {
+    text-align: start;
+    line-height: 1.4;
+  }
+}
+
+.service-row__right {
+  padding: 18px;
+  display: flex;
+  align-items: stretch;
+}
+
+.service-row__img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+
+  border-radius: 14px;
+  border: 1px solid rgba(0, 182, 159, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* OBJECTS */
+.objects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.object-card {
+  background: rgba(20, 20, 21, 0.55);
+  border: 1px solid rgba(0, 182, 159, 0.25);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.object-card__media {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+
+  border-bottom: 1px solid rgba(0, 182, 159, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.object-card__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.object-card__title {
+  text-align: start;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.object-card__text {
+  text-align: start;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.object-card__bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.75);
+
+  li {
+    text-align: start;
+  }
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+  .services-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .services-hero__media-box {
+    height: 220px;
+  }
+
+  .service-row {
+    grid-template-columns: 1fr;
+  }
+
+  .service-row__left {
+    order: 1;
+  }
+
+  .service-row__right {
+    order: 2;
   }
 }
