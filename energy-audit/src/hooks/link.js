@@ -2,9 +2,12 @@
 
 const BASE_URL = "http://104.248.129.188:5000";
 
-// ✅ Ключи localStorage (ВАЖНО: auth_user именно так!)
+// ✅ Ключи localStorage
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "auth_user";
+
+// ✅ Триггер модалок авторизации из любых страниц
+const LS_AUTH_MODAL = "auth_modal_open"; // { type: "login"|"register", ts: number }
 
 // ===== Token helpers =====
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -41,6 +44,28 @@ export const clearUser = () => {
   console.log("[link.js] clearUser");
   localStorage.removeItem(USER_KEY);
 };
+
+// ===== Open auth modal from anywhere =====
+export const openAuthModal = (type) => {
+  // type: "login" | "register"
+  localStorage.setItem(
+    "auth_modal_request",
+    JSON.stringify({ type, ts: Date.now() })
+  );
+  window.dispatchEvent(new Event("auth_modal_open"));
+};
+
+export const consumeAuthModalRequest = () => {
+  const raw = localStorage.getItem("auth_modal_request");
+  if (!raw) return null;
+  localStorage.removeItem("auth_modal_request");
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
 
 // ===== Query builder =====
 function buildQuery(params) {
@@ -100,10 +125,27 @@ export const apiPost = (url, body, options = {}) =>
 // ===== Auth API =====
 export const registerRequest = (payload) => apiPost("/auth/register", payload);
 
-// Ты просил GET /auth/login
+// ✅ Логин (у тебя сейчас backend работает через POST — это правильно)
 export const loginRequest = ({ email, password }) =>
   apiPost("/auth/login", { email, password });
 
-
+// ✅ Verify email: GET /auth/verify-email?token=...
 export const verifyEmailRequest = (token) =>
   apiGet("/auth/verify-email", { token });
+// ===============================
+// AUTH CHANGE EVENT (ВАЖНО)
+// ===============================
+
+export const emitAuthChanged = () => {
+  console.log("[link.js] emitAuthChanged");
+  window.dispatchEvent(new Event("auth_changed"));
+};
+
+export const onAuthChanged = (callback) => {
+  const handler = () => callback();
+  window.addEventListener("auth_changed", handler);
+
+  return () => {
+    window.removeEventListener("auth_changed", handler);
+  };
+};

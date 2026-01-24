@@ -1,4 +1,3 @@
-// src/components/Header/Header.jsx
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
@@ -15,6 +14,8 @@ import {
   setUser as saveUser,
   getUser as loadUser,
   clearUser,
+  emitAuthChanged,
+  consumeAuthModalRequest,
 } from "../../hooks/link";
 
 const LS_UI = "header_ui_state";
@@ -23,38 +24,39 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // UI
+  /* ================= UI ================= */
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
 
-  // AUTH
+  /* ================= AUTH ================= */
   const [authUser, setAuthUser] = useState(() => {
     const u = loadUser();
     console.log("[Header] init authUser from storage:", u);
     return u;
   });
 
-  // Register
+  /* ================= REGISTER ================= */
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const [registerStep, setRegisterStep] = useState("form");
+  const [registerStep, setRegisterStep] = useState("form"); // form | verify
   const [verifyToken, setVerifyToken] = useState("");
 
-  // Login
+  /* ================= LOGIN ================= */
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [loginLoading, setLoginLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  // Restore UI + authUser once
+  /* ================= RESTORE UI ================= */
   useEffect(() => {
     const savedToken = getToken();
-    if (savedToken) console.log("[Header] restore token:", savedToken);
+    if (savedToken) {
+      console.log("[Header] restore token:", savedToken);
+    }
 
     const raw = localStorage.getItem(LS_UI);
     if (raw) {
@@ -83,20 +85,7 @@ export default function Header() {
     if (u) setAuthUser(u);
   }, []);
 
-  // ✅ Единственное место редиректа админа (без циклов)
-  useEffect(() => {
-    if (!authUser) return;
-
-    const isAdmin = authUser.role === "engineer";
-    const alreadyOnAdmin = location.pathname.startsWith("/admin");
-
-    if (isAdmin && !alreadyOnAdmin) {
-      console.log("[Header] admin detected -> redirect /admin");
-      navigate("/admin", { replace: true });
-    }
-  }, [authUser, location.pathname, navigate]);
-
-  // Save UI
+  /* ================= SAVE UI ================= */
   useEffect(() => {
     const ui = {
       isLoginOpen,
@@ -110,6 +99,7 @@ export default function Header() {
       loginEmail,
       loginPassword,
     };
+
     localStorage.setItem(LS_UI, JSON.stringify(ui));
   }, [
     isLoginOpen,
@@ -124,7 +114,36 @@ export default function Header() {
     loginPassword,
   ]);
 
-  // Save user to storage + state (без навигации здесь!)
+  /* ================= OPEN MODAL FROM PAGES ================= */
+  useEffect(() => {
+    const handler = () => {
+      const req = consumeAuthModalRequest();
+      if (!req) return;
+
+      console.log("[Header] auth_modal_open:", req);
+
+      if (req.type === "login") setIsLoginOpen(true);
+      if (req.type === "register") setIsRegisterOpen(true);
+    };
+
+    window.addEventListener("auth_modal_open", handler);
+    return () => window.removeEventListener("auth_modal_open", handler);
+  }, []);
+
+  /* ================= ADMIN REDIRECT ================= */
+  useEffect(() => {
+    if (!authUser) return;
+
+    const isAdmin = authUser.role === "engineer";
+    const alreadyOnAdmin = location.pathname.startsWith("/admin");
+
+    if (isAdmin && !alreadyOnAdmin) {
+      console.log("[Header] admin detected → redirect /admin");
+      navigate("/admin", { replace: true });
+    }
+  }, [authUser, location.pathname, navigate]);
+
+  /* ================= CORE ================= */
   const commitUser = (u) => {
     console.log("[Header] commitUser ->", u);
     if (!u) return;
@@ -132,10 +151,14 @@ export default function Header() {
     const { token, access_token, ...userOnly } = u;
     saveUser(userOnly);
     setAuthUser(userOnly);
+
+    emitAuthChanged();
   };
 
-  // Register
+  /* ================= REGISTER ================= */
   const handleRegister = async () => {
+    console.log("[Header] register click", { regName, regEmail });
+
     setLoading(true);
     setError("");
 
@@ -153,16 +176,18 @@ export default function Header() {
       setRegPassword("");
 
       if (data?.user) commitUser(data.user);
-    } catch (err) {
-      console.log("[Header] register error:", err);
-      setError(err.message);
+    } catch (e) {
+      console.log("[Header] register error:", e);
+      setError(e.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // Verify (у тебя ответ = user object + token)
+  /* ================= VERIFY EMAIL ================= */
   const handleVerifyEmail = async () => {
+    console.log("[Header] verify click", verifyToken);
+
     if (!verifyToken.trim()) {
       setError("Введите токен из письма");
       return;
@@ -176,7 +201,9 @@ export default function Header() {
       console.log("[Header] verify response:", data);
 
       const tokenFromServer = data?.token || data?.access_token;
-      if (tokenFromServer) setToken(tokenFromServer);
+      if (tokenFromServer) {
+        setToken(tokenFromServer);
+      }
 
       const userFromServer = data?.user || data;
       commitUser(userFromServer);
@@ -184,17 +211,19 @@ export default function Header() {
       setIsRegisterOpen(false);
       setRegisterStep("form");
       setVerifyToken("");
-    } catch (err) {
-      console.log("[Header] verify error:", err);
-      setError(err.message);
+    } catch (e) {
+      console.log("[Header] verify error:", e);
+      setError(e.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // Login (POST)
+  /* ================= LOGIN ================= */
   const handleLogin = async () => {
-    setLoginLoading(true);
+    console.log("[Header] login click", loginEmail);
+
+    setLoading(true);
     setLoginError("");
 
     try {
@@ -205,40 +234,37 @@ export default function Header() {
 
       console.log("[Header] login response:", data);
 
-      const tokenFromServer = data?.token || data?.access_token;
-      if (tokenFromServer) setToken(tokenFromServer);
+      if (data?.token) setToken(data.token);
 
-      const userFromServer = data?.user || data;
-      if (userFromServer?.is_email_verified === false) {
-        throw new Error("Подтвердите почту перед входом.");
+      const user = data?.user || data;
+      if (user?.is_email_verified === false) {
+        throw new Error("Подтвердите почту");
       }
 
-      commitUser(userFromServer);
+      commitUser(user);
 
       setIsLoginOpen(false);
       setLoginEmail("");
       setLoginPassword("");
-    } catch (err) {
-      console.log("[Header] login error:", err);
-      setLoginError(err.message);
+    } catch (e) {
+      console.log("[Header] login error:", e);
+      setLoginError(e.message);
     } finally {
-      setLoginLoading(false);
+      setLoading(false);
     }
   };
 
-  // Logout
+  /* ================= LOGOUT ================= */
   const handleLogout = () => {
-    setAuthUser(null);
+    console.log("[Header] logout");
+
     clearUser();
     clearToken();
+    setAuthUser(null);
 
-    setIsLoginOpen(false);
-    setIsRegisterOpen(false);
+    emitAuthChanged();
+
     setIsBurgerOpen(false);
-
-    setRegisterStep("form");
-    setVerifyToken("");
-
     navigate("/", { replace: true });
   };
 
@@ -246,13 +272,12 @@ export default function Header() {
     window.open("https://mail.google.com/mail/u/", "_blank", "noopener,noreferrer");
   };
 
+  /* ================= RENDER ================= */
   return (
     <>
       <header className="header">
         <div className="User">
-          <div className="header__logo-container">
-            <img src={logo} alt="Энергоаудит" className="header__logo" />
-          </div>
+          <img src={logo} alt="logo" className="header__logo" />
 
           <div className="header__user-buttons desktop-only">
             {!authUser ? (
@@ -276,7 +301,10 @@ export default function Header() {
             )}
           </div>
 
-          <button className="burger mobile-only" onClick={() => setIsBurgerOpen(true)}>
+          <button
+            className="burger mobile-only"
+            onClick={() => setIsBurgerOpen(true)}
+          >
             <span />
             <span />
             <span />
@@ -292,7 +320,7 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Burger */}
+      {/* ===== BURGER MENU ===== */}
       <Modal isOpen={isBurgerOpen} onClose={() => setIsBurgerOpen(false)}>
         <div className="burger-menu">
           <div className="modal-User-buttons">
@@ -327,19 +355,15 @@ export default function Header() {
         </div>
       </Modal>
 
-      {/* Login */}
+      {/* ===== LOGIN MODAL ===== */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} title="Войти">
-        <input type="email" placeholder="Email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
-        <input type="password" placeholder="Пароль" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
-
+        <input value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Email" />
+        <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="Пароль" />
         {loginError && <p style={{ color: "red" }}>{loginError}</p>}
-
-        <button onClick={handleLogin} disabled={loginLoading}>
-          {loginLoading ? "Вход..." : "Войти"}
-        </button>
+        <button onClick={handleLogin}>{loading ? "Вход..." : "Войти"}</button>
       </Modal>
 
-      {/* Register */}
+      {/* ===== REGISTER MODAL (ORIGINAL STRUCTURE) ===== */}
       <Modal
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
@@ -347,32 +371,29 @@ export default function Header() {
       >
         {registerStep === "form" ? (
           <>
-            <input type="text" placeholder="Имя" value={regName} onChange={(e) => setRegName(e.target.value)} />
-            <input type="email" placeholder="Email" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} />
-            <input type="password" placeholder="Пароль" value={regPassword} onChange={(e) => setRegPassword(e.target.value)} />
-
+            <input value={regName} onChange={(e) => setRegName(e.target.value)} placeholder="Имя" />
+            <input value={regEmail} onChange={(e) => setRegEmail(e.target.value)} placeholder="Email" />
+            <input type="password" value={regPassword} onChange={(e) => setRegPassword(e.target.value)} placeholder="Пароль" />
             {error && <p style={{ color: "red" }}>{error}</p>}
-
-            <button onClick={handleRegister} disabled={loading}>
-              {loading ? "Регистрация..." : "ЗарегисНаши работыроваться"}
+            <button onClick={handleRegister}>
+              {loading ? "Регистрация..." : "Зарегистрироваться"}
             </button>
           </>
         ) : (
           <>
             <p style={{ marginBottom: 10 }}>
-              ✅ Вы зарегисНаши работыровались. На почту <b>{regEmail}</b> отправлен токен.
+              ✅ Вы зарегистрировались. На почту <b>{regEmail}</b> отправлен токен.
             </p>
 
             <input
-              type="text"
-              placeholder="Вставьте токен из письма"
               value={verifyToken}
               onChange={(e) => setVerifyToken(e.target.value)}
+              placeholder="Вставьте токен из письма"
             />
 
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-            <button onClick={handleVerifyEmail} disabled={loading}>
+            <button onClick={handleVerifyEmail}>
               {loading ? "Проверка..." : "Авторизироваться"}
             </button>
 
