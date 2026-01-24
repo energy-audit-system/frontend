@@ -2,6 +2,13 @@ import "../../styles/page.scss";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import { NavLink } from "react-router-dom";
 import dom from "../../image/1313.png";
+import helmet from "../../image/helmet.png";
+import repair from "../../image/repair.png";
+import sticker from "../../image/sticker.png";
+import Treed from "../../image/3d.png";
+import calculator from "../../image/calculator.png";
+import handshake from "../../image/handshake.png";
+
 
 const MAIN_SERVICES = [
   {
@@ -49,31 +56,37 @@ const MAIN_SERVICES = [
 const EXTRA_SERVICES = [
   {
     title: "Генеральный подряд",
+    img: helmet,
     text:
       'Полное управление строительством "под ключ" — от начала работ до сдачи объекта с гарантией качества и соблюдением сроков.',
   },
   {
     title: "Реконструкция и реставрация",
+    img: repair,
     text:
       "Модернизация существующих зданий с сохранением архитектурной ценности и улучшением эксплуатационных характеристик.",
   },
   {
     title: "Строительный контроль",
+    img: sticker,
     text:
       "Независимая экспертиза качества строительно-монтажных работ на всех этапах реализации проекта.",
   },
   {
     title: "BIM-моделирование",
+    img: Treed,
     text:
       "Создание информационных 3D-моделей зданий для эффективного управления проектом и минимизации ошибок.",
   },
   {
     title: "Сметное дело",
+    img: calculator,
     text:
       "Профессиональный расчет стоимости строительства с детальной проработкой всех статей затрат.",
   },
   {
     title: "Консультации экспертов",
+    img: handshake,
     text:
       "Экспертная поддержка на всех этапах реализации проекта от опытных инженеров и архитекторов.",
   },
@@ -162,7 +175,6 @@ export default function Two() {
                   <button className="btn-report">Заказать услугу</button>
                 </div>
 
-                {/* ✅ вместо пустого места — твоя картинка */}
                 <div className="service-row__right" aria-hidden="true">
                   <img className="service-row__img" src={dom} alt="" />
                 </div>
@@ -184,8 +196,7 @@ export default function Two() {
             <FadeUp key={s.title}>
               <div className="service-card">
                 <div className="service-icon">
-                  {/* Иконку добавишь сам */}
-                  <span className="service-icon__dot" />
+                  <img src={s.img} alt="" />
                 </div>
                 <h3 className="service-title">{s.title}</h3>
                 <p className="service-about service-text">{s.text}</p>
